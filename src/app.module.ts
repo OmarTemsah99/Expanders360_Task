@@ -35,7 +35,6 @@ import { AdminSeed } from './auth/admin.seed';
   controllers: [AppController],
   providers: [
     AppService,
-    AdminSeed,
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
@@ -46,6 +45,6 @@ export class AppModule implements OnModuleInit {
   constructor(private readonly adminSeed: AdminSeed) {}
 
   async onModuleInit() {
-    await this.adminSeed.run(); // will only create admin if it doesn't exist
+    await this.adminSeed.run();
   }
 }
