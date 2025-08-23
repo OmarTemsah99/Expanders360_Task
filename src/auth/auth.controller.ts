@@ -1,8 +1,16 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { Public } from './public.decorator';
+import { CurrentUser, CurrentUserPayload } from './current-user.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -24,5 +32,10 @@ export class AuthController {
   @Post('login')
   async login(@Body() dto: LoginDto) {
     return this.auth.login(dto.email, dto.password);
+  }
+
+  @Get('me')
+  getMe(@CurrentUser() me: CurrentUserPayload | undefined) {
+    return me; // protected by JWT by default
   }
 }
