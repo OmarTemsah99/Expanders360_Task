@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, OnModuleInit } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
@@ -7,6 +7,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { AdminSeed } from './auth/admin.seed';
 
 @Module({
   imports: [
@@ -34,10 +35,17 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
   controllers: [AppController],
   providers: [
     AppService,
+    AdminSeed,
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
     },
   ],
 })
-export class AppModule {}
+export class AppModule implements OnModuleInit {
+  constructor(private readonly adminSeed: AdminSeed) {}
+
+  async onModuleInit() {
+    await this.adminSeed.run(); // will only create admin if it doesn't exist
+  }
+}
