@@ -34,11 +34,8 @@ import { MatchesModule } from './matches/matches.module';
     ),
 
     AuthModule,
-
     ProjectsModule,
-
     VendorsModule,
-
     MatchesModule,
   ],
   controllers: [AppController],

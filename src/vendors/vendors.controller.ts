@@ -2,41 +2,51 @@ import {
   Controller,
   Get,
   Post,
-  Body,
   Patch,
-  Param,
   Delete,
+  Param,
+  Body,
+  ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { VendorsService } from './vendors.service';
 import { CreateVendorDto } from './dto/create-vendor.dto';
 import { UpdateVendorDto } from './dto/update-vendor.dto';
+import { Roles } from '../auth/roles.decorator';
+import { RolesGuard } from '../auth/roles.guard';
 
 @Controller('vendors')
 export class VendorsController {
-  constructor(private readonly vendorsService: VendorsService) {}
-
-  @Post()
-  create(@Body() createVendorDto: CreateVendorDto) {
-    return this.vendorsService.create(createVendorDto);
-  }
+  constructor(private readonly vendors: VendorsService) {}
 
   @Get()
-  findAll() {
-    return this.vendorsService.findAll();
+  list() {
+    return this.vendors.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.vendorsService.findOne(+id);
+  get(@Param('id', ParseIntPipe) id: number) {
+    return this.vendors.findOne(id);
   }
 
+  @UseGuards(RolesGuard)
+  @Roles('admin')
+  @Post()
+  create(@Body() dto: CreateVendorDto) {
+    return this.vendors.create(dto);
+  }
+
+  @UseGuards(RolesGuard)
+  @Roles('admin')
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateVendorDto: UpdateVendorDto) {
-    return this.vendorsService.update(+id, updateVendorDto);
+  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateVendorDto) {
+    return this.vendors.update(id, dto);
   }
 
+  @UseGuards(RolesGuard)
+  @Roles('admin')
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.vendorsService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.vendors.remove(id);
   }
 }

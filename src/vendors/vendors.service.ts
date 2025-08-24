@@ -1,26 +1,40 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateVendorDto } from './dto/create-vendor.dto';
 import { UpdateVendorDto } from './dto/update-vendor.dto';
+import { Vendor } from './entities/vendor.entity';
 
 @Injectable()
 export class VendorsService {
-  create(createVendorDto: CreateVendorDto) {
-    return 'This action adds a new vendor';
-  }
+  constructor(
+    @InjectRepository(Vendor) private readonly vendors: Repository<Vendor>,
+  ) {}
 
   findAll() {
-    return `This action returns all vendors`;
+    return this.vendors.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} vendor`;
+  async findOne(id: number) {
+    const v = await this.vendors.findOne({ where: { id } });
+    if (!v) throw new NotFoundException('Vendor not found');
+    return v;
   }
 
-  update(id: number, updateVendorDto: UpdateVendorDto) {
-    return `This action updates a #${id} vendor`;
+  create(dto: CreateVendorDto) {
+    const v = this.vendors.create(dto);
+    return this.vendors.save(v);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} vendor`;
+  async update(id: number, dto: UpdateVendorDto) {
+    const v = await this.findOne(id);
+    Object.assign(v, dto);
+    return this.vendors.save(v);
+  }
+
+  async remove(id: number) {
+    const v = await this.findOne(id);
+    await this.vendors.remove(v);
+    return { deleted: true };
   }
 }
