@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Project } from 'src/projects/entities/project.entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
 @Entity('clients')
 export class Client {
@@ -12,8 +13,11 @@ export class Client {
   contact_email: string;
 
   @Column()
-  password: string; // hashed
+  password: string;
 
   @Column({ default: 'client' })
   role: 'client' | 'admin';
+
+  @OneToMany(() => Project, (project) => project.client)
+  projects: Project[];
 }
