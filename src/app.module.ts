@@ -10,6 +10,7 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { AdminSeed } from './auth/admin.seed';
 import { ProjectsModule } from './projects/projects.module';
 import { VendorsModule } from './vendors/vendors.module';
+import { MatchesModule } from './matches/matches.module';
 
 @Module({
   imports: [
@@ -37,6 +38,8 @@ import { VendorsModule } from './vendors/vendors.module';
     ProjectsModule,
 
     VendorsModule,
+
+    MatchesModule,
   ],
   controllers: [AppController],
   providers: [
