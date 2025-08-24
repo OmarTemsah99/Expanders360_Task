@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { AdminSeed } from './auth/admin.seed';
 import { ProjectsModule } from './projects/projects.module';
+import { VendorsModule } from './vendors/vendors.module';
 
 @Module({
   imports: [
@@ -34,6 +35,8 @@ import { ProjectsModule } from './projects/projects.module';
     AuthModule,
 
     ProjectsModule,
+
+    VendorsModule,
   ],
   controllers: [AppController],
   providers: [
