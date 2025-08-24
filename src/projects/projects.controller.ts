@@ -2,41 +2,59 @@ import {
   Controller,
   Get,
   Post,
-  Body,
   Patch,
-  Param,
   Delete,
+  Param,
+  Body,
+  ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
+import { Roles } from '../auth/roles.decorator';
+import { RolesGuard } from '../auth/roles.guard';
+import { CurrentUser } from '../auth/current-user.decorator';
+
+interface Me {
+  userId: number;
+  role: 'client' | 'admin';
+  email: string;
+}
 
 @Controller('projects')
 export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
 
-  @Post()
-  create(@Body() createProjectDto: CreateProjectDto) {
-    return this.projectsService.create(createProjectDto);
-  }
-
   @Get()
-  findAll() {
-    return this.projectsService.findAll();
+  async list(@CurrentUser() me: Me) {
+    return this.projectsService.findAllForUser(me.userId, me.role);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.projectsService.findOne(+id);
+  async get(@Param('id', ParseIntPipe) id: number, @CurrentUser() me: Me) {
+    return this.projectsService.findOneForUser(id, me.userId, me.role);
+  }
+
+  @Post()
+  async create(@Body() dto: CreateProjectDto, @CurrentUser() me: Me) {
+    return this.projectsService.create(dto, me.userId, me.role);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto) {
-    return this.projectsService.update(+id, updateProjectDto);
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateProjectDto,
+    @CurrentUser() me: Me,
+  ) {
+    return this.projectsService.update(id, dto, me.userId, me.role);
   }
 
+  @UseGuards(RolesGuard)
+  @Roles('admin')
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.projectsService.remove(+id);
+  async remove(@Param('id', ParseIntPipe) id: number, @CurrentUser() me: Me) {
+    // Only admins can delete in this example
+    return this.projectsService.remove(id, me.userId, me.role);
   }
 }

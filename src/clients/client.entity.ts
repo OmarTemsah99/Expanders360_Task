@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { Project } from 'src/projects/entities/project.entity';
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
@@ -12,6 +13,7 @@ export class Client {
   @Column({ unique: true })
   contact_email: string;
 
+  @Exclude()
   @Column()
   password: string;
 
