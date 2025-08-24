@@ -11,6 +11,7 @@ import { AdminSeed } from './auth/admin.seed';
 import { ProjectsModule } from './projects/projects.module';
 import { VendorsModule } from './vendors/vendors.module';
 import { MatchesModule } from './matches/matches.module';
+import { DocumentsModule } from './documents/documents.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { MatchesModule } from './matches/matches.module';
     ProjectsModule,
     VendorsModule,
     MatchesModule,
+    DocumentsModule,
   ],
   controllers: [AppController],
   providers: [

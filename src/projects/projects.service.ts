@@ -27,7 +27,7 @@ export class ProjectsService {
   }
 
   async findOneForUser(
-    id: number,
+    id: string,
     userId: number,
     role: Role,
   ): Promise<Project> {
@@ -68,7 +68,7 @@ export class ProjectsService {
   }
 
   async update(
-    id: number,
+    id: string,
     dto: UpdateProjectDto,
     userId: number,
     role: Role,
@@ -88,7 +88,7 @@ export class ProjectsService {
   }
 
   async remove(
-    id: number,
+    id: string,
     userId: number,
     role: Role,
   ): Promise<{ deleted: true }> {

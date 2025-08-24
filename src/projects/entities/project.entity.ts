@@ -14,8 +14,8 @@ import { decimalTransformer } from 'src/common/transformers/decimal.transformer'
 @Entity('projects')
 @Index('IDX_projects_status', ['status'])
 export class Project {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @ManyToOne(() => Client, { eager: true })
   @JoinColumn({ name: 'client_id' })

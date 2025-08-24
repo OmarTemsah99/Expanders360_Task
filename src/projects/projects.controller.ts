@@ -6,7 +6,6 @@ import {
   Delete,
   Param,
   Body,
-  ParseIntPipe,
   UseGuards,
 } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
@@ -31,8 +30,9 @@ export class ProjectsController {
     return this.projectsService.findAllForUser(me.userId, me.role);
   }
 
+  // The 'id' parameter is now a UUID string, so we remove ParseIntPipe.
   @Get(':id')
-  async get(@Param('id', ParseIntPipe) id: number, @CurrentUser() me: Me) {
+  async get(@Param('id') id: string, @CurrentUser() me: Me) {
     return this.projectsService.findOneForUser(id, me.userId, me.role);
   }
 
@@ -41,9 +41,10 @@ export class ProjectsController {
     return this.projectsService.create(dto, me.userId, me.role);
   }
 
+  // The 'id' parameter is now a UUID string, so we remove ParseIntPipe.
   @Patch(':id')
   async update(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id') id: string,
     @Body() dto: UpdateProjectDto,
     @CurrentUser() me: Me,
   ) {
@@ -53,7 +54,7 @@ export class ProjectsController {
   @UseGuards(RolesGuard)
   @Roles('admin')
   @Delete(':id')
-  async remove(@Param('id', ParseIntPipe) id: number, @CurrentUser() me: Me) {
+  async remove(@Param('id') id: string, @CurrentUser() me: Me) {
     // Only admins can delete in this example
     return this.projectsService.remove(id, me.userId, me.role);
   }
