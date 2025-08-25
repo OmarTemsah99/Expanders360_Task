@@ -1,5 +1,12 @@
 import { decimalTransformer } from 'src/common/transformers/decimal.transformer';
-import { Entity, PrimaryGeneratedColumn, Column, Index } from 'typeorm';
+import { Match } from 'src/matches/entities/match.entity';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  Index,
+  OneToMany,
+} from 'typeorm';
 
 @Entity('vendors')
 @Index('IDX_vendors_rating', ['rating'])
@@ -25,4 +32,7 @@ export class Vendor {
 
   @Column('int')
   response_sla_hours: number;
+
+  @OneToMany(() => Match, (match) => match.vendor, { cascade: true })
+  matches: Match[];
 }

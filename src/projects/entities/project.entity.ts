@@ -7,9 +7,11 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Index,
+  OneToMany,
 } from 'typeorm';
 import { Client } from 'src/clients/client.entity';
 import { decimalTransformer } from 'src/common/transformers/decimal.transformer';
+import { Match } from 'src/matches/entities/match.entity';
 
 @Entity('projects')
 @Index('IDX_projects_status', ['status'])
@@ -36,6 +38,9 @@ export class Project {
 
   @Column({ default: 'active' })
   status: 'active' | 'completed' | 'paused';
+
+  @OneToMany(() => Match, (match) => match.project, { cascade: true })
+  matches: Match[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
