@@ -12,6 +12,7 @@ import { ProjectsModule } from './projects/projects.module';
 import { VendorsModule } from './vendors/vendors.module';
 import { MatchesModule } from './matches/matches.module';
 import { DocumentsModule } from './documents/documents.module';
+import { AnalyticsModule } from './analytics/analytics.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { DocumentsModule } from './documents/documents.module';
     VendorsModule,
     MatchesModule,
     DocumentsModule,
+    AnalyticsModule,
   ],
   controllers: [AppController],
   providers: [
