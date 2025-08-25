@@ -18,7 +18,7 @@ import { AnalyticsModule } from './analytics/analytics.module';
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
 
-    // MySQL
+    // MySQL (TypeORM)
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.MYSQL_HOST ?? 'localhost',
@@ -27,14 +27,16 @@ import { AnalyticsModule } from './analytics/analytics.module';
       password: process.env.MYSQL_PASSWORD ?? '',
       database: process.env.MYSQL_DB ?? 'expansion_db',
       autoLoadEntities: true,
-      synchronize: true, // disable in production
+      synchronize: false, // turn off auto sync when using migrations
+      migrationsRun: false, // optional, set true if you want auto-run on startup
     }),
 
-    // MongoDB
+    // MongoDB (Mongoose)
     MongooseModule.forRoot(
       process.env.MONGO_URI ?? 'mongodb://localhost:27017/expansion_docs',
     ),
 
+    // Feature modules
     AuthModule,
     ProjectsModule,
     VendorsModule,

@@ -1,5 +1,5 @@
-import { decimalTransformer } from 'src/common/transformers/decimal.transformer';
-import { Match } from 'src/matches/entities/match.entity';
+import { decimalTransformer } from '../../common/transformers/decimal.transformer';
+import { Match } from '../../matches/entities/match.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,

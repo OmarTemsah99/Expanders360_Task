@@ -9,9 +9,9 @@ import {
   Index,
   OneToMany,
 } from 'typeorm';
-import { Client } from 'src/clients/client.entity';
-import { decimalTransformer } from 'src/common/transformers/decimal.transformer';
-import { Match } from 'src/matches/entities/match.entity';
+import { Client } from '../../clients/client.entity';
+import { decimalTransformer } from '../../common/transformers/decimal.transformer';
+import { Match } from '../../matches/entities/match.entity';
 
 @Entity('projects')
 @Index('IDX_projects_status', ['status'])
