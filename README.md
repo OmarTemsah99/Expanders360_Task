@@ -1,98 +1,270 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 📘 Expander360 Task – Project Guide
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Welcome to the **Expander360 Task Project**!
+This README will help you **set up, understand, and test** the project — even if you don’t have much technical experience.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## 🚀 1. Setup Instructions
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+1. **Install Node.js & npm**
+   Download from [Node.js official site](https://nodejs.org/).
+   Verify it works:
 
-## Project setup
+   ```bash
+   node -v
+   npm -v
+   ```
 
-```bash
-$ npm install
+2. **Clone the Project**
+
+   ```bash
+   git clone <project-repo-link>
+   cd project-folder
+   ```
+
+3. **Install Dependencies**
+
+   ```bash
+   npm install
+   ```
+
+4. **Configure Environment Variables**
+   - A ready `.env` file is already provided.
+   - Example:
+
+     ```env
+     # MySQL
+     MYSQL_HOST="localhost"
+     MYSQL_PORT="3306"
+     MYSQL_USER="root"
+     MYSQL_PASSWORD="Wargreymon_99"
+     MYSQL_DB="expansion_db"
+
+     # MongoDB
+     MONGO_URI="mongodb://localhost:27017/expansion_docs"
+
+     # JWT
+     JWT_SECRET="supersecretkey"
+     JWT_EXPIRES_IN="1h"
+
+     # RoleKey
+     ADMIN_KEY="1001110010"
+
+     # AdminSeed
+     ADMIN_EMAIL="admin@seed.com"
+     ADMIN_PASSWORD="seed626"
+     ADMIN_COMPANY="AdminSeed"
+
+     # SMTP (Ethereal test account)
+     SMTP_HOST=smtp.ethereal.email
+     SMTP_PORT=587
+     SMTP_SECURE=false
+     SMTP_USER=hallie76@ethereal.email
+     SMTP_PASS=JwuSbyDjxxDkmHZgwP
+     MAIL_FROM=hallie76@ethereal.email
+     ```
+
+     ⚠️ **Important:** These Ethereal credentials are for **testing only**.
+     You can log into [Ethereal](https://ethereal.email) with them to see sent emails.
+
+5. **Start the Server**
+
+   ```bash
+   npm run start:dev
+   ```
+
+   The API will now be available at:
+
+   ```
+   http://localhost:3000
+   ```
+
+---
+
+## 🗂️ 2. Database Schema (Simplified)
+
+```
+┌─────────────┐        ┌──────────────┐        ┌───────────────┐
+│  Clients    │        │   Projects   │        │   Vendors      │
+├─────────────┤        ├──────────────┤        ├───────────────┤
+│ id (PK)     │   1 ──▶│ clientId (FK)│        │ id (PK)       │
+│ company_name│        │ id (UUID PK) │        │ name          │
+│ email       │        │ country      │        │ services_off. │
+│ password    │        │ services_need│        │ countries_sup.│
+│ role        │        │ budget       │        │ rating        │
+└─────────────┘        └──────────────┘        └───────────────┘
+                                 │ 1
+                                 ▼
+                          ┌───────────────┐
+                          │   Matches     │
+                          ├───────────────┤
+                          │ id (PK)       │
+                          │ projectId (FK)│
+                          │ vendorId (FK) │
+                          │ score         │
+                          └───────────────┘
+
+MongoDB (unstructured):
+┌──────────────┐
+│  Documents   │
+├──────────────┤
+│ _id (ObjectId│
+│ projectId    │ → relates to Project UUID
+│ title        │
+│ content      │
+│ tags[]       │
+│ createdAt    │
+│ updatedAt    │
+└──────────────┘
 ```
 
-## Compile and run the project
+---
 
-```bash
-# development
-$ npm run start
+## 🔌 3. API List
 
-# watch mode
-$ npm run start:dev
+### 👤 Auth
 
-# production mode
-$ npm run start:prod
+- `POST /auth/register` → Register a client
+- `POST /auth/login` → Login and get JWT token
+
+### 📁 Projects
+
+- `GET /projects` → List projects
+- `GET /projects/:id` → Get project by ID
+- `POST /projects` → Create project
+- `PATCH /projects/:id` → Update project
+- `DELETE /projects/:id` → Delete project (admin only)
+
+### 🏢 Vendors
+
+- `GET /vendors` → List vendors
+- `GET /vendors/:id` → Get vendor by ID
+- `POST /vendors` → Create vendor (admin only)
+- `PATCH /vendors/:id` → Update vendor (admin only)
+- `DELETE /vendors/:id` → Delete vendor (admin only)
+
+### 🤝 Matches
+
+- `POST /projects/:id/rebuild-matches` → Recalculate matches (emails client)
+- `GET /matches/:id` → Get match by ID
+
+### 📂 Documents (MongoDB)
+
+- `POST /documents` → Upload a document (admin only)
+- `GET /documents` → Public search endpoint (by query or tags)
+  - e.g. `/documents?query=research&tags=finance,legal`
+
+- `GET /documents/project/:projectId` → List all documents linked to a project
+
+---
+
+## 📄 4. Documents Schema (MongoDB)
+
+```ts
+@Schema({ timestamps: true })
+export class Document {
+  @Prop({ required: true })
+  projectId: string; // UUID from Projects table
+
+  @Prop({ required: true })
+  title: string;
+
+  @Prop({ required: true })
+  content: string;
+
+  @Prop([String])
+  tags: string[];
+
+  // createdAt & updatedAt are auto-added
+}
 ```
 
-## Run tests
+- Stored in the `expansion_docs` MongoDB database.
+- Linked to projects by their **UUID projectId**.
+- Flexible: can hold reports, notes, or research documents.
 
-```bash
-# unit tests
-$ npm run test
+---
 
-# e2e tests
-$ npm run test:e2e
+## 📊 5. Matching Formula
 
-# test coverage
-$ npm run test:cov
+Vendors are matched to projects using this scoring:
+
+```
+Score = (Service Overlap × 2.0)
+      + (Vendor Rating × 1.0)
+      + (SLA Bonus)
 ```
 
-## Deployment
+- **Service Overlap**: More overlap = higher score.
+- **Country Match**: Vendor must support the project’s country.
+- **Rating**: Higher vendor ratings increase score.
+- **SLA Bonus**:
+  - < 24h = +3 points
+  - 24–72h = +1 point
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+Matches are stored with details (`servicesOverlap`, `ratingBonus`, `slaBonus`, `reasonForScore`).
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+---
+
+## ✅ 6. Quick Testing
+
+### 1. Register/Login
+
+(same as before — get a token)
+
+### 2. Create Vendor (admin)
+
+(same as before)
+
+### 3. Create Project (client)
+
+(same as before)
+
+### 4. Upload Document (admin only)
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+curl -X POST http://localhost:3000/documents \
+-H "Authorization: Bearer <ADMIN_TOKEN>" \
+-H "Content-Type: application/json" \
+-d '{
+  "projectId": "PROJECT_UUID",
+  "title": "Market Research Report",
+  "content": "This is a test document about market entry strategy.",
+  "tags": ["research", "market", "strategy"]
+}'
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### 5. Search Documents (public)
 
-## Resources
+```bash
+curl "http://localhost:3000/documents?query=market&tags=research"
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+### 6. List Documents by Project (public)
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+```bash
+curl http://localhost:3000/documents/project/PROJECT_UUID
+```
 
-## Support
+✅ You’ll see results come from MongoDB.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+---
 
-## Stay in touch
+## ✉️ 7. Notifications (Nodemailer)
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- Emails are sent automatically when **new vendor matches** are found for a project.
+- You can test emails using the provided **Ethereal account**:
+  - Log in at [https://ethereal.email/login](https://ethereal.email/login)
+  - Username: `hallie76@ethereal.email`
+  - Password: `JwuSbyDjxxDkmHZgwP`
+  - You’ll see all test emails there.
 
-## License
+---
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## 🎯 Final Notes
+
+- **Clients** → manage their own projects
+- **Admins** → manage vendors & documents
+- **MongoDB** → stores unstructured project documents
+- **Ethereal Email** → receives all test notifications
