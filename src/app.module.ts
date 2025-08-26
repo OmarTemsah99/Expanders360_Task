@@ -17,6 +17,7 @@ import { ProjectSeed } from './projects/project.seed';
 import { VendorSeed } from './vendors/vendor.seed';
 import { NotificationsModule } from './notifications/notifications.module';
 import { SchedulerModule } from './scheduler/scheduler.module';
+import { DocumentSeed } from './documents/document.seed';
 
 @Module({
   imports: [
@@ -64,11 +65,13 @@ export class AppModule implements OnModuleInit {
     private readonly adminSeed: AdminSeed,
     private readonly projectSeed: ProjectSeed,
     private readonly vendorSeed: VendorSeed,
+    private readonly documentSeed: DocumentSeed,
   ) {}
 
   async onModuleInit() {
     await this.adminSeed.run();
     await this.projectSeed.run();
     await this.vendorSeed.run();
+    await this.documentSeed.run();
   }
 }

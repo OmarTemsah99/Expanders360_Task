@@ -37,8 +37,8 @@ This README will help you **set up, understand, and test** the project — even 
      # MySQL
      MYSQL_HOST="localhost"
      MYSQL_PORT="3306"
-     MYSQL_USER="root"
-     MYSQL_PASSWORD="Wargreymon_99"
+     MYSQL_USER="YourUser"
+     MYSQL_PASSWORD="YourPass"
      MYSQL_DB="expansion_db"
 
      # MongoDB
