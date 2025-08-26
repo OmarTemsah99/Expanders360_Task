@@ -13,6 +13,8 @@ import { VendorsModule } from './vendors/vendors.module';
 import { MatchesModule } from './matches/matches.module';
 import { DocumentsModule } from './documents/documents.module';
 import { AnalyticsModule } from './analytics/analytics.module';
+import { ProjectSeed } from './projects/project.seed';
+import { VendorSeed } from './vendors/vendor.seed';
 
 @Module({
   imports: [
@@ -54,9 +56,15 @@ import { AnalyticsModule } from './analytics/analytics.module';
   ],
 })
 export class AppModule implements OnModuleInit {
-  constructor(private readonly adminSeed: AdminSeed) {}
+  constructor(
+    private readonly adminSeed: AdminSeed,
+    private readonly projectSeed: ProjectSeed,
+    private readonly vendorSeed: VendorSeed,
+  ) {}
 
   async onModuleInit() {
     await this.adminSeed.run();
+    await this.projectSeed.run();
+    await this.vendorSeed.run();
   }
 }
