@@ -77,12 +77,11 @@ export class ProjectsService {
 
     // Narrow values and cast after checking for undefined so assignments
     // satisfy strict TypeScript checks.
-    if (dto.country !== undefined) project.country = dto.country as string;
+    if (dto.country !== undefined) project.country = dto.country;
     if (dto.services_needed !== undefined)
-      project.services_needed = dto.services_needed as string[];
-    if (dto.budget !== undefined) project.budget = dto.budget as number;
-    if (dto.status !== undefined)
-      project.status = dto.status as 'active' | 'completed' | 'paused';
+      project.services_needed = dto.services_needed;
+    if (dto.budget !== undefined) project.budget = dto.budget;
+    if (dto.status !== undefined) project.status = dto.status;
 
     return this.projects.save(project);
   }
