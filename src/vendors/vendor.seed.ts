@@ -13,6 +13,8 @@ export class VendorSeed {
   ) {}
 
   async run() {
+    const now = new Date();
+
     const seedVendors: Array<Partial<Vendor>> = [
       {
         name: 'Global Insights Ltd',
@@ -20,6 +22,8 @@ export class VendorSeed {
         services_offered: ['market_research', 'expansion_strategy'],
         rating: 4.5,
         response_sla_hours: 24,
+        sla_expires_at: new Date(now.getTime() + 24 * 60 * 60 * 1000), // +24h
+        sla_expired: false,
       },
       {
         name: 'LegalEase Solutions',
@@ -27,6 +31,8 @@ export class VendorSeed {
         services_offered: ['legal_setup', 'company_registration'],
         rating: 4.2,
         response_sla_hours: 48,
+        sla_expires_at: new Date(now.getTime() + 48 * 60 * 60 * 1000), // +48h
+        sla_expired: false,
       },
       {
         name: 'TalentBridge HR',
@@ -34,6 +40,8 @@ export class VendorSeed {
         services_offered: ['hiring', 'outsourcing'],
         rating: 4.7,
         response_sla_hours: 12,
+        sla_expires_at: new Date(now.getTime() + 12 * 60 * 60 * 1000), // +12h
+        sla_expired: false,
       },
       {
         name: 'MENA Growth Partners',
@@ -41,6 +49,8 @@ export class VendorSeed {
         services_offered: ['market_research', 'marketing'],
         rating: 4.0,
         response_sla_hours: 36,
+        sla_expires_at: new Date(now.getTime() + 36 * 60 * 60 * 1000), // +36h
+        sla_expired: false,
       },
       {
         name: 'Americas Business Hub',
@@ -48,6 +58,8 @@ export class VendorSeed {
         services_offered: ['expansion_strategy', 'financial_advisory'],
         rating: 4.3,
         response_sla_hours: 24,
+        sla_expires_at: new Date(now.getTime() + 24 * 60 * 60 * 1000), // +24h
+        sla_expired: false,
       },
     ];
 

@@ -14,6 +14,7 @@ import {
   MatchResult,
   RebuildMatchesResult,
 } from './interfaces/match.interface';
+import { NotificationsService } from '../notifications/notifications.service';
 
 @Injectable()
 export class MatchesService {
@@ -35,6 +36,7 @@ export class MatchesService {
     private readonly projectRepo: Repository<Project>,
     @InjectRepository(Vendor)
     private readonly vendorRepo: Repository<Vendor>,
+    private readonly notifications: NotificationsService,
   ) {}
 
   /**
@@ -74,7 +76,7 @@ export class MatchesService {
     );
     this.logger.log(`${eligibleMatches.length} eligible matches calculated`);
 
-    // 4. Get existing matches to track what's new vs updated
+    // 4. Get existing matches to detect NEW ones
     const existingMatches = await this.matchRepo.find({
       where: { project: { id: projectId } },
       relations: ['vendor'],
@@ -84,7 +86,7 @@ export class MatchesService {
       existingMatches.map((match) => match.vendor.id),
     );
 
-    // 5. Prepare entities for upsert
+    // 5. Prepare entities for replacement
     const matchEntities = await Promise.all(
       eligibleMatches.map(async (result) => {
         const vendor = await this.vendorRepo.findOneBy({
@@ -103,8 +105,6 @@ export class MatchesService {
       }),
     );
 
-    // 6. Replace existing matches for this project with the newly calculated set.
-    // Simpler and more reliable than upsert when entities include relations.
     let matchesCreated = 0;
     let matchesUpdated = 0;
 
@@ -121,6 +121,22 @@ export class MatchesService {
         (match) => !existingVendorIds.has(match.vendor.id),
       ).length;
       matchesUpdated = eligibleMatches.length - matchesCreated;
+
+      // 6. Send notifications for NEW matches only
+      const newMatches = eligibleMatches.filter(
+        (match) => !existingVendorIds.has(match.vendor.id),
+      );
+
+      await Promise.all(
+        newMatches.map((match) =>
+          this.notifications.sendMatchCreated(project.client.contact_email, {
+            projectId: project.id,
+            country: project.country,
+            vendorName: match.vendor.name,
+            score: match.score,
+          }),
+        ),
+      );
     } catch (error) {
       this.logger.error('Failed to replace matches', error);
       throw error;

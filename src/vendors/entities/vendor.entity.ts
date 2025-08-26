@@ -33,6 +33,13 @@ export class Vendor {
   @Column('int')
   response_sla_hours: number;
 
+  // NEW SLA FIELDS
+  @Column({ type: 'timestamp', nullable: true })
+  sla_expires_at?: Date; // when their current SLA window ends
+
+  @Column({ type: 'boolean', default: false })
+  sla_expired: boolean; // flagged by scheduler
+
   @OneToMany(() => Match, (match) => match.vendor, { cascade: true })
   matches: Match[];
 }

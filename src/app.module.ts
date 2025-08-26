@@ -15,6 +15,8 @@ import { DocumentsModule } from './documents/documents.module';
 import { AnalyticsModule } from './analytics/analytics.module';
 import { ProjectSeed } from './projects/project.seed';
 import { VendorSeed } from './vendors/vendor.seed';
+import { NotificationsModule } from './notifications/notifications.module';
+import { SchedulerModule } from './scheduler/scheduler.module';
 
 @Module({
   imports: [
@@ -45,6 +47,8 @@ import { VendorSeed } from './vendors/vendor.seed';
     MatchesModule,
     DocumentsModule,
     AnalyticsModule,
+    NotificationsModule,
+    SchedulerModule,
   ],
   controllers: [AppController],
   providers: [
